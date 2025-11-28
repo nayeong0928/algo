@@ -24,6 +24,8 @@
         RChild.left = tLeft;
         RChild.right = RLChild;
 
+        setHeight(tNode, tNode.height);
+
         return tNode;
     }
 
