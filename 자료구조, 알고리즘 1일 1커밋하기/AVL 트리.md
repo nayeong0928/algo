@@ -6,8 +6,10 @@
 ## 높이 조정
 
 높이 조정이 필요할 때는
+
 1. 원소 삽입: 새로운 원소 삽입으로 트리 불균형
 2. 원소 삭제: 원소가 삭제됨으로써 트리 불균형, 상위 루트까지 불균형해질 수 있음
+
 따라서 삽입/삭제 시 어떤 불균형인지 타입을 확인하고 회전하는 과정이 필요
 
 ### 타입 확인
@@ -108,6 +110,44 @@
         t.height = 1 + Math.max(t.left.height, t.right.height);
         LChild.height = 1 + Math.max(LChild.left.height, LChild.right.height);
         return LChild;
+    }
+
+```
+
+## 삽입
+
+- 삽입할 원소가 t보다 작으면 왼쪽, 크면 오른쪽에 위치하는 점은 이진탐색트리와 동일
+- 균형이 깨졌을 수도 있으므로 needBalance(), balanceAVL()로 확인하고 해결
+
+``` java
+
+    @Override
+    public void insert(Comparable x) {
+        root = insertItem(root, x);
+    }
+
+    private AVLNode insertItem(AVLNode tNode, Comparable x) {
+        if (tNode == NIL) {
+            tNode = new AVLNode(x);
+
+        } else if (x.compareTo(tNode.item) < 0) {
+            tNode.left = insertItem(tNode.left, x);
+            tNode.height = 1 + Math.max(tNode.right.height, tNode.left.height);
+            int type = needBalance(tNode);
+            if (type != NO_NEED) {
+                tNode = balanceAVL(tNode, type);
+            }
+
+        } else {
+            tNode.right = insertItem(tNode.right, x);
+            tNode.height = 1 + Math.max(tNode.right.height, tNode.left.height);
+            int type = needBalance(tNode);
+            if (type != NO_NEED) {
+                tNode = balanceAVL(tNode, type);
+            }
+        }
+
+        return tNode;
     }
 
 ```
